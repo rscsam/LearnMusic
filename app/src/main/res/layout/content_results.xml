@@ -16,13 +16,15 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:layout_alignParentTop="true"
+        android:text="score"
         android:id="@+id/score_tv">
     </TextView>
 
     <TextView android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:layout_below="@id/score_text"
+        android:layout_below="@id/score_tv"
+        android:text="passed"
         android:id="@+id/pass_tv">
     </TextView>
 
@@ -30,6 +32,7 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:layout_below="@id/pass_tv"
+        android:text="missed"
         android:id="@+id/miss_tv">
     </TextView>
 
@@ -37,6 +40,7 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:layout_below="@id/miss_tv"
+        android:text="time"
         android:id="@+id/time_taken_tv">
     </TextView>
 </RelativeLayout>

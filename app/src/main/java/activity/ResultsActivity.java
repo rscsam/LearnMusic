@@ -30,10 +30,10 @@ public class ResultsActivity extends AppCompatActivity {
 
         Intent prev = getIntent();
         Bundle extras = prev.getExtras();
-        scoreTV.setText(new StringNumberBinder("Score: ", extras.getInt("sylan.score")).toString());
-        passTV.setText(new StringNumberBinder("Passed: ", extras.getInt("sylan.passCount")).toString());
-        missTV.setText(new StringNumberBinder("Missed: ", extras.getInt("sylan.missed")).toString());
-        scoreTV.setText(new StringNumberBinder("Time Taken: ", extras.getInt("sylan.timeTaken")).toString());
+        scoreTV.setText(new StringNumberBinder("Score", extras.getInt("sylan.score")).toString());
+        passTV.setText(new StringNumberBinder("Passed", extras.getInt("sylan.passCount")).toString());
+        missTV.setText(new StringNumberBinder("Missed", extras.getInt("sylan.missed")).toString());
+        timeTV.setText(new StringNumberBinder("Time Taken", extras.getInt("sylan.timeTaken")).toString());
     }
 
 }

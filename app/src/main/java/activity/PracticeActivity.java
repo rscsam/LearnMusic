@@ -94,15 +94,15 @@ public class PracticeActivity extends AppCompatActivity {
     }
 
     public void generateNextNote() {
+        if (turn++ >= notes.length) {
+            fin();
+        }
         int rand = (int) (Math.random() * notes.length);
         currentNote = notes[rand];
         updateNoteImage();
         if (speed != R.id.notime_rb) {
             setTimer();
             timerStarted = true;
-        }
-        if (++turn >= notes.length) {
-            fin();
         }
     }
 

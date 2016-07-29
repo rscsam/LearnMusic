@@ -13,6 +13,8 @@ import android.widget.RadioGroup;
 
 import com.learn_music.sylan.learnmusic.R;
 
+import control.PracticeSettings;
+
 public class SelectionActivity extends AppCompatActivity {
 
     @Override
@@ -33,11 +35,9 @@ public class SelectionActivity extends AppCompatActivity {
                 RadioGroup speeds = (RadioGroup) findViewById(R.id.speed_selection_rg);
 
                 Intent startPractice = new Intent(SelectionActivity.this, PracticeActivity.class);
-                startPractice.putExtra("sylan.alto", alto.isChecked());
-                startPractice.putExtra("sylan.bass", bass.isChecked());
-                startPractice.putExtra("sylan.treble", treble.isChecked());
-                startPractice.putExtra("sylan.speed", speeds.getCheckedRadioButtonId());
-                startActivity(startPractice);
+                startPractice.putExtra("sylan.settings", new PracticeSettings(treble.isChecked(),
+                        bass.isChecked(), alto.isChecked(), speeds.getCheckedRadioButtonId()).toInts());
+                        startActivity(startPractice);
             }
         });
     }

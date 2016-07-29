@@ -12,7 +12,11 @@ import android.widget.TextView;
 
 import com.learn_music.sylan.learnmusic.R;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 import control.DataManager;
+import control.PracticeSettings;
 import model.StringNumberBinder;
 
 import model.Note;
@@ -28,6 +32,7 @@ public class PracticeActivity extends AppCompatActivity {
 
     private TextView timerTV;
     private CountDownTimer timer;
+    private PracticeSettings settings;
     private int speed;
     private boolean timerStarted;
     private int timeTaken;
@@ -45,21 +50,17 @@ public class PracticeActivity extends AppCompatActivity {
 
         Intent startedFromSelection = getIntent();
         Bundle extras = startedFromSelection.getExtras();
-        boolean treble = extras.getBoolean("sylan.treble");
-        boolean bass = extras.getBoolean("sylan.bass");
-        boolean alto = extras.getBoolean("sylan.tenor");
-        int speedRef = extras.getInt("sylan.speed");
-        if (speedRef == R.id.fast_rb) {
+        settings = PracticeSettings.formFromInts(extras.getIntArray("sylan.settings"));
+        if (settings.speed() == R.id.fast_rb) {
             speed = 4000;
-        } else if (speedRef == R.id.slow_rb) {
+        } else if (settings.speed() == R.id.slow_rb) {
             speed = 12000;
-        } else if (speedRef == R.id.medium_rb) {
+        } else if (settings.speed() == R.id.medium_rb) {
             speed = 8000;
         } else {
             speed = R.id.notime_rb;
         }
-        notes = new Note[trebleNotes().length];
-        notes = trebleNotes();
+        notes = formNotesArray(settings.treble(), settings.bass(), settings.alto());
         score = 0;
         passCount = 0;
         missed = 0;
@@ -81,21 +82,66 @@ public class PracticeActivity extends AppCompatActivity {
         trebleNotes[4] = new Note("E", R.drawable.e);
         trebleNotes[5] = new Note("F", R.drawable.f);
         trebleNotes[6] = new Note("G", R.drawable.g);
-
         return trebleNotes;
     }
 
     private Note[] bassNotes() {
-        return null;
+        Note[] bassNotes = new Note[7];
+        bassNotes[0] = new Note("A", R.drawable.a);
+        bassNotes[1] = new Note("B", R.drawable.b);
+        bassNotes[2] = new Note("C", R.drawable.c);
+        bassNotes[3] = new Note("D", R.drawable.d);
+        bassNotes[4] = new Note("E", R.drawable.e);
+        bassNotes[5] = new Note("F", R.drawable.f);
+        bassNotes[6] = new Note("G", R.drawable.g);
+        return bassNotes;
     }
 
     private Note[] altoNotes() {
-        return null;
+        Note[] altoNotes = new Note[7];
+        altoNotes[0] = new Note("A", R.drawable.a);
+        altoNotes[1] = new Note("B", R.drawable.b);
+        altoNotes[2] = new Note("C", R.drawable.c);
+        altoNotes[3] = new Note("D", R.drawable.d);
+        altoNotes[4] = new Note("E", R.drawable.e);
+        altoNotes[5] = new Note("F", R.drawable.f);
+        altoNotes[6] = new Note("G", R.drawable.g);
+        return altoNotes();
     }
 
+    private Note[] formNotesArray(boolean treble, boolean bass, boolean alto) {
+        ArrayList<Note> notes = new ArrayList<>();
+        if (treble) {
+            Note[] trebleNotes = trebleNotes();
+            for (int i = 0; i < trebleNotes.length; i++) {
+                notes.add(trebleNotes[i]);
+            }
+        }
+        if (bass) {
+            Note[] bassNotes = bassNotes();
+            for (int i = 0; i < bassNotes.length; i++) {
+                notes.add(bassNotes[i]);
+            }
+        }
+        if (alto) {
+            Note[] altoNotes = altoNotes();
+            for (int i = 0; i < altoNotes.length; i++) {
+                notes.add(altoNotes[i]);
+            }
+        }
+        int size = notes.size();
+        Note[] finalNotes = new Note[size];
+        int k = 0;
+        for (int i = 0; i < notes.size(); i++) {
+            int rand = (int) (Math.random() * notes.size());
+            finalNotes[k++] = notes.get(rand);
+        }
+        return finalNotes;
+    }
     public void generateNextNote() {
         if (turn++ >= notes.length) {
             fin();
+            return;
         }
         int rand = (int) (Math.random() * notes.length);
         currentNote = notes[rand];
@@ -224,6 +270,9 @@ public class PracticeActivity extends AppCompatActivity {
     }
 
     private void fin() {
+        if (timerStarted) {
+            timer.cancel();
+        }
         DataManager dm = new DataManager();
         dm.storeScore(score);
         dm.storePassed(passCount);
@@ -236,6 +285,8 @@ public class PracticeActivity extends AppCompatActivity {
         startResultsActivity.putExtra("sylan.passCount", passCount);
         startResultsActivity.putExtra("sylan.timeTaken", timeTaken);
         startResultsActivity.putExtra("sylan.misses", missed);
+        startResultsActivity.putExtra("sylan.settings", settings.toInts());
         startActivity(startResultsActivity);
+        finish();
     }
 }

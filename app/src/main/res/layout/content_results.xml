@@ -43,4 +43,20 @@
         android:text="time"
         android:id="@+id/time_taken_tv">
     </TextView>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/time_taken_tv"
+        android:text="Start Again"
+        android:id="@+id/start_again_bttn"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/start_again_bttn"
+        android:text="Home"
+        android:id="@+id/home_bttn"
+        />
 </RelativeLayout>

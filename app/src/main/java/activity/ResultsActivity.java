@@ -7,10 +7,12 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.learn_music.sylan.learnmusic.R;
 
+import control.PracticeSettings;
 import model.StringNumberBinder;
 
 public class ResultsActivity extends AppCompatActivity {
@@ -29,11 +31,27 @@ public class ResultsActivity extends AppCompatActivity {
         TextView timeTV = (TextView) findViewById(R.id.time_taken_tv);
 
         Intent prev = getIntent();
-        Bundle extras = prev.getExtras();
+        final Bundle extras = prev.getExtras();
         scoreTV.setText(new StringNumberBinder("Score", extras.getInt("sylan.score")).toString());
         passTV.setText(new StringNumberBinder("Passed", extras.getInt("sylan.passCount")).toString());
         missTV.setText(new StringNumberBinder("Missed", extras.getInt("sylan.missed")).toString());
         timeTV.setText(new StringNumberBinder("Time Taken", extras.getInt("sylan.timeTaken")).toString());
+        Button restartBttn = (Button) findViewById(R.id.start_again_bttn);
+        restartBttn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent restart = new Intent(ResultsActivity.this, PracticeActivity.class);
+                restart.putExtra("sylan.settings", extras.getByteArray("sylan.settings"));
+                startActivity(restart);
+            }
+        });
+        Button homeBttn = (Button) findViewById(R.id.home_bttn);
+        homeBttn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent home = new Intent(ResultsActivity.this, MainActivity.class);
+                startActivity(home);
+            }
+        });
     }
-
 }
